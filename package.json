@@ -1,0 +1,23 @@
+{
+  "name": "vst2-preset-parser",
+  "version": "0.0.0",
+  "description": "vst2 patch format parser",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha",
+    "prepublishOnly": "npm test"
+  },
+  "keywords": [
+    "vst2",
+    "vst"
+  ],
+  "author": "Charles Holbrow",
+  "license": "ISC",
+  "devDependencies": {
+    "mocha": "^8.2.1",
+    "should": "^13.2.3"
+  },
+  "dependencies": {
+    "binary-parser": "^1.7.0"
+  }
+}
