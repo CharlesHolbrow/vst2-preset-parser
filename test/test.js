@@ -11,6 +11,7 @@ const fxbkExample = fs.readFileSync(path.join(__dirname, 'rea-comp.FXB'))
 const fxckExample = fs.readFileSync(path.join(__dirname, 'rea-comp.FXP'))
 const fpchExample = fs.readFileSync(path.join(__dirname, 'massive-test-patch.FXP'))
 const fbchExample = fs.readFileSync(path.join(__dirname, 'massive-test-bank.FXB'))
+const podoExample = fs.readFileSync(path.join(__dirname, 'podolski-pad.fxp'))
 
 describe('files that store parameters directly', function () {
   it('should correctly parse an FxBk .fxb file ', function () {
@@ -52,5 +53,16 @@ describe('the .state64 property', function () {
     const fpch = parse(fpchExample)
     fpch.fxMagic.should.equal('FPCh')
     should.exist(fpch.state64)
+  })
+})
+
+describe('idUint and idString', function () {
+  let podolski
+  before(function () { podolski = parse(podoExample) })
+  it('parse should get an idString', function () {
+    podolski.idString.should.equal('Podo')
+  })
+  it('parse should get idUint', function () {
+    podolski.idUint.should.equal(1349477487)
   })
 })

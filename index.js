@@ -16,7 +16,9 @@ const parser = new Parser()
   .seek(-4) // store fx magic in two different ways
   .string('fxMagicInt', { length: 4, formatter: (str) => FX_MAGIC[str] })
   .uint32('version')
-  .uint32('fxID')
+  .uint32('idUint')
+  .seek(-4)
+  .string('idString', { length: 4 } )
   .uint32('fxVersion')
   .uint32('count')
   .choice({
@@ -36,7 +38,8 @@ const parser = new Parser()
  * @typedef {Object} Vst2Preset
  * @property {string} fxMagic one of: 'FxCk', 'FPCh', 'FxBk', 'FBCh'
  * @property {number} version format version (typically 1)
- * @property {number} fxID unique plugin id Number
+ * @property {number} idUint unique plugin id Number
+ * @property {number} idString unique plugin id as a string
  * @property {number} fxVersion
  * @property {number} count number of parameters (for FxCk patches). Number of programs (for FxBk banks)
  * @property {number[]} [patchParams] all parameter values (for FxCk .fxp files)
