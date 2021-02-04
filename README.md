@@ -9,6 +9,7 @@ const result = parse(buffer) // result will have the following properties:
 
 /**
  * A Vst2 Patch or Bank.
+ * `.fxp` files will have a `.state64` string
  * `.fxp` files will have one of: `.patchParams` or `.patchChunk`
  * `.fxb` files will have one of: `.bankPatches` or `.bankChunk`
  * @typedef {Object} Vst2Preset
@@ -21,5 +22,6 @@ const result = parse(buffer) // result will have the following properties:
  * @property {Buffer} [patchChunk] binary state (for FPCh .fxp files)
  * @property {Vst2Preset[]} [bankPatches] all patches in the bank (for FxBk .fxb files)
  * @property {Buffer} [bankChunk] binary state (for FBCh .fxb files)
+ * @property {string} [state64] base64 encoded state (for all .fxp files)
  */
 ```

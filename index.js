@@ -43,7 +43,7 @@ const parser = new Parser()
  * @property {Buffer} [patchChunk] binary state (for FPCh .fxp files)
  * @property {Vst2Preset[]} [bankPatches] all patches in the bank (for FxBk .fxb files)
  * @property {Buffer} [bankChunk] binary state (for FBCh .fxb files)
- * @property {string} [state] base64 encoded state (for all .fxp files)
+ * @property {string} [state64] base64 encoded state (for all .fxp files)
  */
 
 /**
