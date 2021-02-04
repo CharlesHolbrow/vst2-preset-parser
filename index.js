@@ -22,8 +22,8 @@ const parser = new Parser()
   .choice({
     tag: 'fxMagicInt',
     choices: {
-      0: new Parser().string('programName', { length: 28, stripNull: true }).saveOffset('stateStart').array('patchParams', { length: 'count', type: 'floatbe' }).saveOffset('stateEnd'),
-      1: new Parser().string('programName', { length: 28, stripNull: true }).uint32('byteSize').saveOffset('stateStart').buffer('patchChunk', { length: 'byteSize' }).saveOffset('stateEnd'),
+      0: new Parser().string('programName', { length: 28, stripNull: true }).saveOffset('stateStart').array('patchParams', { length: 'count', type: 'floatbe' }).saveOffset('stateEnd').seek(v=>v.stateStart-v.stateEnd).buffer('state64', { length: v=>v.stateEnd - v.stateStart, formatter: v=>v.toString('base64')}),
+      1: new Parser().string('programName', { length: 28, stripNull: true }).uint32('byteSize').saveOffset('stateStart').buffer('patchChunk', { length: 'byteSize' }).saveOffset('stateEnd').seek(v=>v.stateStart-v.stateEnd).buffer('state64', { length: v=>v.stateEnd - v.stateStart, formatter: v=>v.toString('base64')}),
       2: new Parser().buffer('future', { length: 128 }).array('bankPatches', { length: 'count', type: 'self' }),
       3: new Parser().buffer('future', { length: 128 }).uint32('byteSize').buffer('bankChunk', { length: 'byteSize' }),
     }
@@ -50,11 +50,7 @@ const parser = new Parser()
  * @param {Buffer} Buffer binary contents of a vst2 .fxb or .fxp file
  * @returns {Vst2Preset}
  */
-const parse = (buffer) => {
-  const result = parser.parse(buffer)
-  if (result.fxMagicInt === 1 || result.fxMagicInt === 0) result.state64 = buffer.slice(result.stateStart, result.stateEnd).toString('base64')
-  return result
-}
+const parse = (buffer) => parser.parse(buffer)
 
 module.exports = {
   parse,

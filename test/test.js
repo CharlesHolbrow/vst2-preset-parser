@@ -7,7 +7,6 @@ const { parse } = require('..')
 const fs = require('fs')
 const path = require('path')
 
-
 const fxbkExample = fs.readFileSync(path.join(__dirname, 'rea-comp.FXB'))
 const fxckExample = fs.readFileSync(path.join(__dirname, 'rea-comp.FXP'))
 const fpchExample = fs.readFileSync(path.join(__dirname, 'massive-test-patch.FXP'))
