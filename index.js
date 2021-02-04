@@ -22,8 +22,8 @@ const parser = new Parser()
   .choice({
     tag: 'fxMagicInt',
     choices: {
-      0: new Parser().string('programName', { length: 28, stripNull: true }).array('patchParams', { length: 'count', type: 'floatbe' }),
-      1: new Parser().string('programName', { length: 28, stripNull: true }).uint32('byteSize').buffer('patchChunk', { length: 'byteSize' }),
+      0: new Parser().string('programName', { length: 28, stripNull: true }).saveOffset('stateStart').array('patchParams', { length: 'count', type: 'floatbe' }).saveOffset('stateEnd'),
+      1: new Parser().string('programName', { length: 28, stripNull: true }).uint32('byteSize').saveOffset('stateStart').buffer('patchChunk', { length: 'byteSize' }).saveOffset('stateEnd'),
       2: new Parser().buffer('future', { length: 128 }).array('bankPatches', { length: 'count', type: 'self' }),
       3: new Parser().buffer('future', { length: 128 }).uint32('byteSize').buffer('bankChunk', { length: 'byteSize' }),
     }
@@ -43,14 +43,18 @@ const parser = new Parser()
  * @property {Buffer} [patchChunk] binary state (for FPCh .fxp files)
  * @property {Vst2Preset[]} [bankPatches] all patches in the bank (for FxBk .fxb files)
  * @property {Buffer} [bankChunk] binary state (for FBCh .fxb files)
+ * @property {string} [state] base64 encoded state (for all .fxp files)
  */
 
 /**
  * @param {Buffer} Buffer binary contents of a vst2 .fxb or .fxp file
  * @returns {Vst2Preset}
  */
-const parse = (buffer) => parser.parse(buffer)
-
+const parse = (buffer) => {
+  const result = parser.parse(buffer)
+  if (result.fxMagicInt === 1 || result.fxMagicInt === 0) result.state64 = buffer.slice(result.stateStart, result.stateEnd).toString('base64')
+  return result
+}
 
 module.exports = {
   parse,

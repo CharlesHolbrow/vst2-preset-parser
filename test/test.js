@@ -21,7 +21,7 @@ describe('files that store parameters directly', function () {
     should.exist(result.bankPatches[0], '.bankPatches is empty')
     result.bankPatches[0].patchParams.length.should.equal(19) // rea-comp has 19 parameters
   })
-  it('should correctly parse an FxCk example', function () {
+  it('should correctly parse an FxCk .fxp file', function () {
     const result = parse(fxckExample)
     result.fxMagic.should.equal('FxCk')
     result.patchParams.length.should.equal(19)
@@ -41,5 +41,17 @@ describe('files that store chunks', function () {
     result.fxMagic.should.equal('FBCh')
     should.exist(result.bankChunk)
     result.bankChunk.length.should.be.greaterThan(0)
+  })
+})
+
+describe('the .state64 property', function () {
+  it('should be present for .fxp types', function () {
+    const fxck = parse(fxckExample)
+    fxck.fxMagic.should.equal('FxCk')
+    should.exist(fxck.state64)
+
+    const fpch = parse(fpchExample)
+    fpch.fxMagic.should.equal('FPCh')
+    should.exist(fpch.state64)
   })
 })
